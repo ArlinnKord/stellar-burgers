@@ -71,13 +71,23 @@ type TOrdersResponse = TServerResponse<{
   data: TOrder[];
 }>;
 
-export const getIngredientsApi = () =>
-  fetch(`${URL}/ingredients`)
-    .then((res) => checkResponse<TIngredientsResponse>(res))
+export const getIngredientsApi = () => {
+  console.log('Запрос к URL:', `${URL}/ingredients`);
+  return fetch(`${URL}/ingredients`)
+    .then((res) => {
+      console.log('Ответ статус:', res.status);
+      return checkResponse<TIngredientsResponse>(res);
+    })
     .then((data) => {
+      console.log('Данные от сервера:', data);
       if (data?.success) return data.data;
       return Promise.reject(data);
+    })
+    .catch((err) => {
+      console.error('Ошибка загрузки:', err);
+      return Promise.reject(err);
     });
+};
 
 export const getFeedsApi = () =>
   fetch(`${URL}/orders/all`)

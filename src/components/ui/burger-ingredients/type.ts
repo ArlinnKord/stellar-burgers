@@ -6,9 +6,9 @@ export type BurgerIngredientsUIProps = {
   buns: TIngredient[];
   mains: TIngredient[];
   sauces: TIngredient[];
-  titleBunRef: RefObject<HTMLHeadingElement>;
-  titleMainRef: RefObject<HTMLHeadingElement>;
-  titleSaucesRef: RefObject<HTMLHeadingElement>;
+  titleBunRef: RefObject<HTMLHeadingElement | null>;
+  titleMainRef: RefObject<HTMLHeadingElement | null>;
+  titleSaucesRef: RefObject<HTMLHeadingElement | null>;
   bunsRef: (node?: Element | null | undefined) => void;
   mainsRef: (node?: Element | null | undefined) => void;
   saucesRef: (node?: Element | null | undefined) => void;

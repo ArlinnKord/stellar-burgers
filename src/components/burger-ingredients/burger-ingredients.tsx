@@ -3,12 +3,23 @@ import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
+import { useSelector, useDispatch } from '../../services/store';
+import { getIngredients } from '../../services/slices/ingredientsSlice';
+import { RootState } from '../../services/store';
 
 export const BurgerIngredients: FC = () => {
-  /** TODO: взять переменные из стора */
-  const buns = [];
-  const mains = [];
-  const sauces = [];
+  const dispatch = useDispatch();
+  const { ingredients, loading } = useSelector((state: RootState) => state.ingredients);
+
+  useEffect(() => {
+    if (!ingredients.length && !loading) {
+      dispatch(getIngredients());
+    }
+  }, [dispatch, ingredients.length, loading]);
+
+  const buns = ingredients.filter((item) => item.type === 'bun');
+  const mains = ingredients.filter((item) => item.type === 'main');
+  const sauces = ingredients.filter((item) => item.type === 'sauce');
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
@@ -47,7 +58,9 @@ export const BurgerIngredients: FC = () => {
       titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  return null;
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
 
   return (
     <BurgerIngredientsUI
@@ -55,9 +68,9 @@ export const BurgerIngredients: FC = () => {
       buns={buns}
       mains={mains}
       sauces={sauces}
-      titleBunRef={titleBunRef}
-      titleMainRef={titleMainRef}
-      titleSaucesRef={titleSaucesRef}
+      titleBunRef={titleBunRef as React.RefObject<HTMLHeadingElement>}
+      titleMainRef={titleMainRef as React.RefObject<HTMLHeadingElement>}
+      titleSaucesRef={titleSaucesRef as React.RefObject<HTMLHeadingElement>}
       bunsRef={bunsRef}
       mainsRef={mainsRef}
       saucesRef={saucesRef}
