@@ -1,4 +1,9 @@
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../services/store';
+import { getIngredients } from '../../services/slices/ingredientsSlice';
+import { RootState } from '../../services/store';
+
 import { ConstructorPage } from '@pages';
 import { Feed } from '@pages';
 import { Login } from '@pages';
@@ -11,19 +16,24 @@ import { NotFound404 } from '@pages';
 import { IngredientDetails } from '@components';
 import { OrderInfo } from '@components';
 import { Modal } from '@components';
-import '../../index.css';
-import styles from './app.module.css';
-
 import { AppHeader } from '@components';
 import { ProtectedRoute } from '../protected-route';
 
+import '../../index.css';
+import styles from './app.module.css';
+
 const App = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;
+  
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   const handleModalClose = () => {
-    navigate(-1); // Возвращаемся на предыдущую страницу
+    navigate(-1);
   };
 
   return (
@@ -33,7 +43,6 @@ const App = () => {
         <Route path="/" element={<ConstructorPage />} />
         <Route path="/feed" element={<Feed />} />
         
-        {/* Защищенные роуты - только для неавторизованных */}
         <Route
           path="/login"
           element={
@@ -67,7 +76,6 @@ const App = () => {
           }
         />
         
-        {/* Защищенные роуты - только для авторизованных */}
         <Route
           path="/profile"
           element={
@@ -85,7 +93,6 @@ const App = () => {
           }
         />
         
-        {/* Отдельные страницы для модалок (при прямом переходе) */}
         <Route path="/ingredients/:id" element={<IngredientDetails />} />
         <Route path="/feed/:number" element={<OrderInfo />} />
         <Route
@@ -100,7 +107,6 @@ const App = () => {
         <Route path="*" element={<NotFound404 />} />
       </Routes>
 
-      {/* Модалки */}
       {background && (
         <Routes>
           <Route

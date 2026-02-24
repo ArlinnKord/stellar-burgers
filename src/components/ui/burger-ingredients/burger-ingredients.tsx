@@ -3,7 +3,7 @@ import { Tab } from '@zlden/react-developer-burger-ui-components';
 
 import styles from './burger-ingredients.module.css';
 import { BurgerIngredientsUIProps } from './type';
-import { IngredientsCategory } from '@components';
+import { IngredientsCategory } from '../../ingredients-category';
 
 export const BurgerIngredientsUI: FC<BurgerIngredientsUIProps> = memo(
   ({
@@ -45,24 +45,18 @@ export const BurgerIngredientsUI: FC<BurgerIngredientsUIProps> = memo(
         <div className={styles.content}>
           <IngredientsCategory
             title='Булки'
-            // Временное решение: приведение типа для совместимости с текущими типами
-            // Проблема: titleBunRef имеет тип RefObject<HTMLHeadingElement | null>,
-            // а компонент ожидает RefObject<HTMLHeadingElement>
-            // TODO: исправить типы в type.ts, добавив null
             titleRef={titleBunRef as React.RefObject<HTMLHeadingElement>}
             ingredients={buns}
             ref={bunsRef}
           />
           <IngredientsCategory
             title='Начинки'
-            // Временное решение: приведение типа
             titleRef={titleMainRef as React.RefObject<HTMLHeadingElement>}
             ingredients={mains}
             ref={mainsRef}
           />
           <IngredientsCategory
             title='Соусы'
-            // Временное решение: приведение типа
             titleRef={titleSaucesRef as React.RefObject<HTMLHeadingElement>}
             ingredients={sauces}
             ref={saucesRef}

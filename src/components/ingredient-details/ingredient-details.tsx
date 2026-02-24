@@ -7,8 +7,12 @@ import { RootState } from '../../services/store';
 
 export const IngredientDetails: FC = () => {
   const { id } = useParams();
-  const { ingredients } = useSelector((state: RootState) => state.ingredients);
+  const { ingredients, loading } = useSelector((state: RootState) => state.ingredients);
   
+  if (loading) {
+    return <Preloader />;
+  }
+
   const ingredientData = ingredients.find((item) => item._id === id);
 
   if (!ingredientData) {
