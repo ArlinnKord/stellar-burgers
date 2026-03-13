@@ -25,7 +25,7 @@ export const ProtectedRoute = ({
   }, [dispatch, isAuthChecked]);
 
   if (!isAuthChecked) {
-    return null; // или прелоадер
+    return null;
   }
 
   if (onlyUnAuth && user) {
@@ -34,7 +34,7 @@ export const ProtectedRoute = ({
   }
 
   if (!onlyUnAuth && !user) {
-    return <Navigate to="/login" state={{ from: location }} />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return <>{children}</>;
