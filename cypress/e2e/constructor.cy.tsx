@@ -93,16 +93,17 @@ describe('Конструктор бургера', () => {
     cy.contains('12345').should('exist');
 
     // Закрываем модалку
-    cy.get('button.Z7mUFPBZScxutAKTLKHN').click({ force: true });
-
-    // Ждем немного
-    cy.wait(1000);
+    cy.get('button.Z7mUFPBZScxutAKTLKHN').find('svg').click({ force: true });
 
     // Проверяем, что вернулись на главную
     cy.contains('Соберите бургер').should('be.visible');
 
-    // Проверяем, что номер не видим
-    cy.contains('12345').should('not.be.visible');
+    // Проверяем, что номер исчез
+    cy.contains('12345').should('not.exist');
+    
+    // Проверяем очистку конструктора (проверяем плейсхолдеры)
+    cy.contains('Выберите булки').should('be.visible');
+    cy.contains('Выберите начинку').should('be.visible');
   });
 
   it('Должно закрываться модальное окно по клику на оверлей', () => {
